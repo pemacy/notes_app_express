@@ -1,0 +1,74 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("None Navbar Code");
+
+    const baseURL = "https://magnoliaandgracephotographyco.com/";
+    const homeLinks = {
+      sc: {
+        gvl: "greenville-sc",
+      },
+      tx: {
+        aus: "austin-tx",
+        mck: "mckinney-tx",
+        hou: "houston-tx",
+      },
+      ut: {
+        utc: "utah-county-ut",
+      },
+      co: {
+        cos: "colorado-springs-co",
+      },
+      mt: {
+        kal: "kalispell-mt",
+      },
+      id: {
+        bos: "boise-id",
+      },
+      nc: {
+        ral: "raleigh-nc",
+      },
+    };
+
+    const regionLink = Object.values(homeLinks)
+      .flatMap((v) => Object.values(v))
+      .flatMap((v) => window.location.pathname.match(new RegExp(v, "i")))
+      .filter((v) => v)[0];
+
+    let state, region, search;
+
+    if (regionLink) {
+      for (k in homeLinks) {
+        for (k1 in homeLinks[k]) {
+          if (homeLinks[k][k1] === m) {
+            state = k;
+            region = k1;
+            break;
+          }
+        }
+      }
+    } else {
+      search = window.location.search
+        ? window.location.search
+        : ("?state=sc&region=gvl"[(state, region)] = search
+            .split("?")[1]
+            .split("&")
+            .map((s) => s.split("=")[1]));
+    }
+
+    const navItems = ["home", "faq", "blog", "contact"];
+
+    const urls = {
+      home: baseURL + homeLinks[state][region],
+      faq: baseURL + "faq/" + search,
+      blog: baseURL + "blog/" + search,
+      contact: baseURL + "contactus/" + search,
+    };
+
+    navItems.forEach((navItem) => {
+      const htmlCol = document.getElementsByClassName(`${navItem}-none`);
+      for (link of htmlCol) {
+        link.href = urls[navItem];
+      }
+    });
+  });
+</script>

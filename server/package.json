@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server to notes app: express with mongodb and written in typescript",
+  "license": "ISC",
+  "author": "Preston Macy",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.13",
+    "supertest": "^7.1.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
