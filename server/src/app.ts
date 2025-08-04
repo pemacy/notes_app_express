@@ -1,6 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import noteRoutes from './routes/noteRoutes'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const app = express()
 export const PORT = process.env.PORT || 3001

@@ -4,16 +4,19 @@ import {
   getNote,
   createNote,
   updateNote,
-  deleteNote
+  deleteNote,
+  deleteAllNotes
 } from '../controllers/noteController'
 import { Request, Response } from 'express'
 
 const router = express.Router()
 
-router.get('/env', (_req: Request, res: Response) => {
-  const nodeEnv = process.env.NODE_ENV || 'production'
-  res.json({ env: nodeEnv })
-})
+if (process.env.NODE_ENV === 'test') {
+  router.get('/env', (_req: Request, res: Response) => {
+    res.json({ env: 'test' })
+  })
+  router.delete('/', deleteAllNotes)
+}
 
 router.get('/', getAllNotes)
 router.post('/new', createNote)

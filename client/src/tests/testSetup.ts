@@ -17,6 +17,11 @@ beforeAll(async () => {
   await verifyTestServer()
 })
 
+beforeEach(async () => {
+  await axios.delete(import.meta.env.VITE_NOTES_API)
+})
+
 afterEach(() => {
   cleanup()
+  axios.delete(import.meta.env.VITE_NOTES_API)
 })

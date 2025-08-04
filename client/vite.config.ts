@@ -11,6 +11,7 @@ export default defineConfig({
     environment: 'jsdom',
     env: loadEnv("", process.cwd(), ""),
     globals: true,
-    setupFiles: './src/tests/testSetup.ts'
+    setupFiles: './src/tests/testSetup.ts',
+    reporters: ['verbose']
   }
 })

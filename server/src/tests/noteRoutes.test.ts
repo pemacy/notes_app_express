@@ -39,6 +39,25 @@ test.skip('it should delete a note', async () => {
   expect(noteCount).toBe(0)
 })
 
+test('it should return an error if note deleted', async () => {
+  const note = new Note({
+    content: 'delete note error test',
+    important: true
+  })
+
+  const newNote = await note.save()
+
+  const urlPath = '/api/notes/' + newNote._id
+
+  let res = await request(app).delete(urlPath).set('Accept', 'application/json')
+  if (res === undefined) throw new Error('test: noteRoutes - it should return an error if note deleted: delete response undefined')
+  expect(res.body.result.deletedCount).toBe(1)
+
+  res = await request(app).delete(urlPath).set('Accept', 'application/json')
+  if (res === undefined) throw new Error('test: noteRoutes - it should return an error if note deleted: delete response undefined')
+  expect(res.body.result.deletedCount).toBe(0)
+})
+
 test('it should update a note', async () => {
   const note = new Note({
     content: 'Original note',
@@ -47,6 +66,21 @@ test('it should update a note', async () => {
 
   const savedNote = await note.save()
   const res = await request(app).put('/api/notes/edit/' + savedNote._id).send({ content: 'Updated note' }).set('Accept', 'application/json')
+
   const updatedNote = await Note.findById(savedNote._id)
-  if (updatedNote) expect(updatedNote.content).toBe('Updated note')
+  if (updatedNote) {
+    expect(updatedNote.content).toBe('Updated note')
+    expect(res.body.note.content).toBe(updatedNote.content)
+  }
+})
+
+test.skip('delete all notes', async () => {
+  const note = new Note({
+    content: 'delete all',
+    important: true
+  })
+  const newNote = await note.save()
+  const res = await request(app).delete('/api/notes/')
+  const noteCount = await Note.countDocuments()
+  expect(noteCount).toBe(0)
 })
