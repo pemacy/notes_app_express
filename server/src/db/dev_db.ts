@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import 'dotenv/config'
 
 mongoose.set('strictQuery', false)
 
@@ -9,9 +8,8 @@ const connectDevDB = async () => {
   try {
     console.log('Database', process.env.MONGO_DB_DEV, 'connection successful')
     mongoose.connect(url)
-  } catch (err) {
-    console.log('A MongoDB connection error occured:', err)
-    process.exit(1)
+  } catch (e: unknown) {
+    if (e instanceof Error) throw Error(`A MongoDB error occured: ${e.message}`)
   }
 }
 

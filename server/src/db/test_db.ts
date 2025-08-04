@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import 'dotenv/config'
 
 mongoose.set('strictQuery', false)
 
@@ -7,8 +6,9 @@ const url = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PAS
 
 const connectTestDB = async () => {
   try {
-    await mongoose.connect(url)
+    const conn = await mongoose.connect(url)
     console.log('Test database connected')
+    return conn
   } catch (err) {
     console.log('MongoDB connection error', err)
     process.exit(1)

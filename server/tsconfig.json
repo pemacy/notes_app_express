@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "composite": false,
+    "types": [
+      "./vite-env.d.ts"
+    ],
+    "paths": {
+      "@utils/*": ["../utils/*"]
+    }
+  },
+  "include": ["src"]
+}
