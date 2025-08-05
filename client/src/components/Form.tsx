@@ -1,14 +1,38 @@
-import type { FormProps } from "../utils/types"
+import type { Note } from '@utils/types'
+import { onFormSubmit } from '../services/onSubmitCallbacks'
 
-const Form = ({ onSubmit }: FormProps) => {
+type FormProps = {
+  setAllNotes: React.Dispatch<React.SetStateAction<Note[]>>
+}
+
+const Form = ({ setAllNotes }: FormProps) => {
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={(e) => onFormSubmit(e, setAllNotes)}
+        className="p-4 border border-gray-700 rounded-md space-y-4">
         <fieldset className="space-x-2">
-          <label htmlFor="content">Enter Content</label>
+          <label htmlFor="content">Content</label>
           <input
             id="content"
+            name='content'
             type="text"
+            className='border border-white rounded-md py-1 px-2' />
+        </fieldset>
+        <fieldset className="space-x-2">
+          <label htmlFor="important">Imporant</label>
+          <input
+            defaultChecked
+            id="important"
+            name='important'
+            value='important'
+            type="radio"
+            className='border border-white rounded-md py-1 px-2' />
+          <label htmlFor="not-important">Not Imporant</label>
+          <input
+            id="not-important"
+            name='important'
+            value='not important'
+            type="radio"
             className='border border-white rounded-md py-1 px-2' />
         </fieldset>
         <button

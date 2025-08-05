@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import type { ObjectId } from 'mongoose'
 import Note from '../models/Note'
 import logger from '../utils/logger'
+import type { DeleteNoteResult, UpdateNoteResult } from '@utils/types'
 
 export const getAllNotes = async (_req: Request, res: Response) => {
   let notes
@@ -29,18 +30,13 @@ export const createNote = async (req: Request, res: Response) => {
   }
 }
 
-type DeleteNoteResult = {
-  acknowledged: boolean;
-  deletedCount: number;
-}
-
 export const deleteNote = async (req: Request, res: Response) => {
   const id = req.params.id
   const note = await Note.findById(id)
   try {
     const result: DeleteNoteResult = await Note.deleteOne({ _id: id })
     if (result.acknowledged === true) {
-      res.json({ note: note?.toJSON(), result })
+      res.json({ ...note?.toJSON(), ...result })
     } else {
       res.status(400).json(result)
     }
@@ -56,26 +52,20 @@ export const deleteNote = async (req: Request, res: Response) => {
 
 }
 
-type UpdateNoteResult = {
-  acknowledged: boolean;
-  modifiedCount: number;
-  upsertedId: mongoose.Types.ObjectId | null;
-  upsertedCount: number;
-  matchedCount: number;
-}
-
 export const updateNote = async (req: Request, res: Response) => {
   const id = req.params.id
   const body = req.body
+  console.log(body, id)
 
   const result: UpdateNoteResult = await Note.updateOne({ _id: id }, body)
+  console.log(result)
 
   if (result.acknowledged === true) {
     if (result.matchedCount === 0) {
       res.status(301).json({ error: 'no note found', result })
     } else {
       const updatedNote = await Note.findById(id)
-      res.json({ note: updatedNote?.toJSON(), result })
+      res.json({ ...updatedNote?.toJSON(), ...result })
     }
   } else {
     res.status(400).json({ error: 'Update failed', result })

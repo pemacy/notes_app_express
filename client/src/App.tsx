@@ -1,19 +1,28 @@
-//import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import {
+  getAllNotes
+} from './services/notesAPI'
 import './App.css'
 import Form from './components/Form'
-
-const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  console.log('Form is submitted')
-}
+import DisplayNotes from './components/DisplayNotes'
+import type { Note } from '@utils/types'
 
 function App() {
-  //const [count, setCount] = useState(0)
+  const [allNotes, setAllNotes] = useState<Note[]>([])
+
+  useEffect(() => {
+    getAllNotes().then(notes => {
+      setAllNotes(notes)
+    })
+  }, [])
 
   return (
     <>
-      <h1>Notes App</h1>
-      <Form onSubmit={onFormSubmit} />
+      <h1 className='font-bold text-4xl text-center underline mb-6'>Notes App</h1>
+      <h2 className='font-bold text-xl text-left'>All Notes</h2>
+      <DisplayNotes allNotes={allNotes} setAllNotes={setAllNotes} />
+      <h2 className='font-bold text-xl text-left'>Create Note</h2>
+      <Form setAllNotes={setAllNotes} />
     </>
   )
 }

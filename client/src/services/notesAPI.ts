@@ -1,10 +1,11 @@
 import axios, { AxiosError } from 'axios'
-import type { AxiosResponse } from 'axios'
-import type { Note } from "@utils/types"
+import type { Note, UpdatedNote, DeletedNote } from "@utils/types"
 
-const notesUrl = process.env.NOTES_URL || 'http://localhost:3001/api/notes'
+const host = window.location.hostname
+const notesUrl = 'http://' + host + ':3001/api/notes'
+//const notesUrl = 'http://localhost:3001/api/notes'
 
-export const getAllNotes = async () => {
+export const getAllNotes = async (): Promise<Note[]> => {
   let response
   try {
     response = await axios.get(notesUrl)
@@ -16,11 +17,11 @@ export const getAllNotes = async () => {
     }
   } finally {
     if (response === undefined) throw new Error('notesAPI#getAllNotes: response undefined')
-    return response
+    return response.data
   }
 }
 
-export const createNote = async (note: Note): Promise<AxiosResponse> => {
+export const createNote = async (note: Note): Promise<Note> => {
   let response
   try {
     response = await axios.post(notesUrl + '/new', note)
@@ -32,11 +33,11 @@ export const createNote = async (note: Note): Promise<AxiosResponse> => {
     }
   } finally {
     if (response === undefined) throw new Error('notesAPI#createNote: response undefined')
-    return response
+    return response.data
   }
 }
 
-export const getNote = async (id: string): Promise<AxiosResponse> => {
+export const getNote = async (id: string): Promise<Note> => {
   let response
   const url = notesUrl + `/${id}`
   try {
@@ -50,11 +51,11 @@ export const getNote = async (id: string): Promise<AxiosResponse> => {
     }
   } finally {
     if (response === undefined) throw new Error('notesAPI#getNote: response undefined')
-    return response
+    return response.data
   }
 }
 
-export const updateNote = async (id: string, data: { content?: string, important?: boolean }): Promise<AxiosResponse> => {
+export const updateNote = async (id: string, data: { content?: string, important?: boolean }): Promise<UpdatedNote> => {
   const url = notesUrl + '/edit/' + id
   let response
   try {
@@ -67,11 +68,11 @@ export const updateNote = async (id: string, data: { content?: string, important
     }
   } finally {
     if (response === undefined) throw new Error('notesAPI#updateNote: server response undefined')
-    return response
+    return response.data
   }
 }
 
-export const deleteNote = async (id: string) => {
+export const deleteNote = async (id: string): Promise<DeletedNote> => {
   const url = notesUrl + `/${id}`
   let response
   try {
@@ -83,6 +84,7 @@ export const deleteNote = async (id: string) => {
       console.log('notesAPI#getNote: An error occurred:', err)
     }
   } finally {
-    return response
+    if (response === undefined) throw new Error('notesAPI#deleteNote: server response undefined')
+    return response.data
   }
 }
