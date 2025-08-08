@@ -1,11 +1,18 @@
 import type { Note } from '@utils/types'
 import { onFormSubmit } from '../services/onSubmitCallbacks'
+import type { FormEvent } from 'react'
+
+type onSubmit = React.Dispatch<React.SetStateAction<Note[]>> |
+  React.FormEventHandler<HTMLFormElement> |
+  ((e: FormEvent<HTMLFormElement>, setAllNotes: React.Dispatch<React.SetStateAction<Note[]>>) => Promise<void>);
 
 type FormProps = {
-  setAllNotes: React.Dispatch<React.SetStateAction<Note[]>>
+  setAllNotes?: React.Dispatch<React.SetStateAction<Note[]>>;
+  onSubmit?: onSubmit;
 }
 
 const Form = ({ setAllNotes }: FormProps) => {
+  if (setAllNotes === undefined) throw new Error('setAllNotes undefined')
   return (
     <>
       <form onSubmit={(e) => onFormSubmit(e, setAllNotes)}

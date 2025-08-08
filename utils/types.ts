@@ -32,3 +32,8 @@ export type DeleteNoteResult = {
 
 export type UpdatedNote = Note & UpdateNoteResult
 export type DeletedNote = Note & DeleteNoteResult
+
+export type FormProps = {
+  setAllNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+}
